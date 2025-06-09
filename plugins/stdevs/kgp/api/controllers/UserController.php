@@ -2,6 +2,7 @@
 
 namespace StDevs\Kgp\Api\Controllers;
 
+use Mail;
 use Response;
 use Exception;
 use Validator;
@@ -60,6 +61,16 @@ class UserController extends Controller
             $user->password_confirmation = $data['password_confirmation'];
 
             $user->save();
+
+            try {
+                Mail::send('stdevs.kgp::mail.welcome', ['user' => $user], function($message) use ($user) {
+                    $message->to($user->email, $user->name);
+                    $message->subject('Witaj w naszej aplikacji!');
+                });
+            } catch (Exception $e) {
+                // Log błąd, ale nie przerywaj procesu rejestracji
+                \Log::error('Błąd wysyłki emaila powitalnego: ' . $e->getMessage());
+            }
 
             return Response::json([
                 'success' => true,
