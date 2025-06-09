@@ -1,4 +1,6 @@
-<?php namespace StDevs\Kgp;
+<?php
+
+namespace StDevs\Kgp;
 
 use Backend;
 use System\Classes\PluginBase;
@@ -71,13 +73,11 @@ class Plugin extends PluginBase
      */
     public function registerNavigation()
     {
-        return []; // Remove this line to activate
-
         return [
             'kgp' => [
                 'label' => 'Kgp',
                 'url' => Backend::url('stdevs/kgp/mycontroller'),
-                'icon' => 'icon-leaf',
+                'icon' => 'ph ph-map-pin',
                 'permissions' => ['stdevs.kgp.*'],
                 'order' => 500,
             ],
