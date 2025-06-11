@@ -1,1 +1,7 @@
-v1.0.1: First version of Kgp
+v1.0.1: 
+    - First version of Kgp
+
+v1.1.0:
+    - Add api_token to users table
+    - 1_1_0_add_api_token_users_table.php
+

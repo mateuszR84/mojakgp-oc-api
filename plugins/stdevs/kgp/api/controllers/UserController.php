@@ -6,8 +6,10 @@ use Mail;
 use Response;
 use Exception;
 use Validator;
+use Illuminate\Support\Str;
 use RainLab\User\Models\User;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -63,12 +65,11 @@ class UserController extends Controller
             $user->save();
 
             try {
-                Mail::send('stdevs.kgp::mail.welcome', ['user' => $user], function($message) use ($user) {
+                Mail::send('stdevs.kgp::mail.welcome', ['user' => $user], function ($message) use ($user) {
                     $message->to($user->email, $user->name);
                     $message->subject('Witaj w naszej aplikacji!');
                 });
             } catch (Exception $e) {
-                // Log błąd, ale nie przerywaj procesu rejestracji
                 \Log::error('Błąd wysyłki emaila powitalnego: ' . $e->getMessage());
             }
 
@@ -91,6 +92,39 @@ class UserController extends Controller
                 'success' => false,
                 'message' => 'Wystąpił błąd podczas rejestracji: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function login()
+    {
+        $loginData = request()->only('email', 'password');
+
+        try {
+            $user = \RainLab\User\Models\User::where('email', $loginData['email'])->first();
+
+            if (!$user || !Hash::check($loginData['password'], $user->password)) {
+                return response()->json(['error' => 'Invalid credentials'], 401);
+            }
+
+            if (!$user->is_activated) {
+                return response()->json(['error' => 'Account not activated'], 401);
+            }
+
+            $token = Str::random(60);
+            $user->api_token = hash('sha256', $token);
+            $user->save();
+
+            return response()->json([
+                'token' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'email' => $user->email
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Login failed'], 500);
         }
     }
 }

@@ -8,3 +8,5 @@ use StDevs\Kgp\Api\Controllers\UserController;
 // });
 
 Route::post('api/registration', [UserController::class, 'register']);
+Route::post('api/login', [UserController::class, 'login']);
+
