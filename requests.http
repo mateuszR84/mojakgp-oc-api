@@ -1,18 +1,21 @@
 ### User login
+# @name login
 POST http://mojakgp-api.devm/api/login
 Content-Type: application/json
 Cookie: XDEBUG_SESSION=start
 
 {
-    "email": "mateusz.rycombel84@gmail.com",
+    "email": "laqutel@mailinator.com",
     "password": "adminadmin1"
 }
 
 ### User logout
+@usertoken = {{login.response.body.token}}
+
 POST http://mojakgp-api.devm/api/logout
 Content-Type: application/json
 Cookie: XDEBUG_SESSION=start
 
 {
-    "api_token": "lHLzviATdlsFedXcySUWqFOYGEyo4gaCUsHwtmgfFE4PkbQQUbMDzbda4t6l"
+    "api_token": "{{usertoken}}"
 }
