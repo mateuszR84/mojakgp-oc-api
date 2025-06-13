@@ -127,4 +127,28 @@ class UserController extends Controller
             return response()->json(['error' => 'Login failed'], 500);
         }
     }
+
+    public function logout()
+    {
+        try {
+            $token = request()->only('api_token');
+
+            if (!$token) {
+                return response()->json(['error' => 'Token required'], 401);
+            }
+
+            $user = \RainLab\User\Models\User::where('api_token', hash('sha256', $token['api_token']))->first();
+
+            if (!$user) {
+                return response()->json(['error' => 'Invalid token'], 401);
+            }
+
+            $user->api_token = null;
+            $user->save();
+
+            return response()->json(['message' => 'Logged out successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Logout failed'], 500);
+        }
+    }
 }
