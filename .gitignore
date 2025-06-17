@@ -60,7 +60,7 @@ node_modules/
 # ----------------------------------------------------------
 
 # Misc
-!.github/workflows/deploy.yaml
+!.github/
 !.gitignore
 !.editorconfig
 !composer.json
