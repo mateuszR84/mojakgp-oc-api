@@ -43,7 +43,7 @@ jobs:
     needs: validate
     if: github.event_name == 'push'
     
-    environment: testing
+    environment: staging
 
     steps:
       - name: Checkout code
@@ -82,24 +82,27 @@ jobs:
             export MAX_BACKUPS=${{ env.MAX_BACKUPS }}
             export HEALTH_CHECK_URL="${{ secrets.HEALTH_CHECK_URL }}"
             export SLACK_WEBHOOK="${{ secrets.SLACK_WEBHOOK }}"
-            export BACKUP_DIR="${{ secrets.BACKUP_DIR || '/var/backups/october-cms' }}"
+            export BACKUP_DIR= /home/${{ secrets.USERNAME }}/webapps/mojakgp_staeg/backups
             
-            # Przejdź do katalogu aplikacji
-            cd /home/${{ secrets.USERNAME }}/webapps/studiodevs_stage/current/public
+            # Przejdź do katalogu z aplikacją (dla skryptu deploy)
+            cd /home/${{ secrets.USERNAME }}/webapps/mojakgp_stage/current/public
+            
+            # Ścieżka do skryptu deploy (poziom wyżej)
+            DEPLOY_SCRIPT="/home/${{ secrets.USERNAME }}/webapps/studiodevs_stage/deploy.sh"
             
             # Sprawdź czy skrypt deploy istnieje i ma uprawnienia do wykonania
-            if [ ! -f "./deploy.sh" ]; then
-              echo "Error: deploy.sh not found in $(pwd)"
+            if [ ! -f "$DEPLOY_SCRIPT" ]; then
+              echo "Error: deploy.sh not found at $DEPLOY_SCRIPT"
               exit 1
             fi
             
-            if [ ! -x "./deploy.sh" ]; then
+            if [ ! -x "$DEPLOY_SCRIPT" ]; then
               echo "Making deploy.sh executable..."
-              chmod +x ./deploy.sh
+              chmod +x "$DEPLOY_SCRIPT"
             fi
             
             # Uruchom skrypt deploy
-            ./deploy.sh
+            "$DEPLOY_SCRIPT"
 
       - name: Notify deployment success
         if: success()
