@@ -82,13 +82,13 @@ jobs:
             export MAX_BACKUPS=${{ env.MAX_BACKUPS }}
             export HEALTH_CHECK_URL="${{ secrets.HEALTH_CHECK_URL }}"
             export SLACK_WEBHOOK="${{ secrets.SLACK_WEBHOOK }}"
-            export BACKUP_DIR= /home/${{ secrets.USERNAME }}/webapps/mojakgp_staeg/backups
+            export BACKUP_DIR= /home/${{ secrets.USERNAME }}/webapps/mojakgp_stage/backups
             
             # Przejdź do katalogu z aplikacją (dla skryptu deploy)
             cd /home/${{ secrets.USERNAME }}/webapps/mojakgp_stage/current/public
             
             # Ścieżka do skryptu deploy (poziom wyżej)
-            DEPLOY_SCRIPT="/home/${{ secrets.USERNAME }}/webapps/studiodevs_stage/deploy.sh"
+            DEPLOY_SCRIPT="/home/${{ secrets.USERNAME }}/webapps/mojakgp_stage/deploy.sh"
             
             # Sprawdź czy skrypt deploy istnieje i ma uprawnienia do wykonania
             if [ ! -f "$DEPLOY_SCRIPT" ]; then
