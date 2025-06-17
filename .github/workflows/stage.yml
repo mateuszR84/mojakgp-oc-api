@@ -12,6 +12,7 @@ env:
   COMPOSER_CMD: composer82
   PHP_CMD: php82
   MAX_BACKUPS: 5
+  STAGING_URL: https://stage.mojakgp.pl  # Wpisz tutaj swój URL lub zostaw puste
 
 jobs:
   # Job do walidacji kodu (opcjonalny - uruchamia się przed deploymentem)
@@ -42,9 +43,7 @@ jobs:
     needs: validate
     if: github.event_name == 'push'
     
-    environment:
-      name: staging
-      url: ${{ secrets.STAGING_URL }}
+    environment: testing
 
     steps:
       - name: Checkout code
@@ -148,7 +147,7 @@ jobs:
       - name: Run basic smoke tests
         run: |
           # Sprawdź czy strona główna odpowiada
-          response=$(curl -s -o /dev/null -w "%{http_code}" "${{ secrets.STAGING_URL }}")
+          response=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.STAGING_URL }}")
           if [ "$response" != "200" ]; then
             echo "Main page check failed with status: $response"
             exit 1
