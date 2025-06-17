@@ -132,7 +132,7 @@ jobs:
   post_deploy_tests:
     runs-on: ubuntu-latest
     needs: deploy
-    if: success() && secrets.HEALTH_CHECK_URL != ''
+    if: success()
     
     steps:
       - name: Wait for application startup
