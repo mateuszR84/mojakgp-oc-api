@@ -12,3 +12,7 @@ Route::post('api/registration', [UserController::class, 'register']);
 Route::post('api/login', [AuthController::class, 'login']);
 Route::post('api/logout', [AuthController::class, 'logout']);
 
+Route::get('/health', function() {
+    return response()->json(['status' => 'ok', 'timestamp' => now()]);
+});
+
