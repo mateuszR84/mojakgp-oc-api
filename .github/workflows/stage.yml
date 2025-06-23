@@ -12,7 +12,7 @@ env:
   COMPOSER_CMD: composer82
   PHP_CMD: php82
   MAX_BACKUPS: 5
-  STAGING_URL: https://stage.mojakgp.pl  # Wpisz tutaj swój URL lub zostaw puste
+  STAGING_URL: https://stage.mojakgp.pl 
 
 jobs:
   # Job do walidacji kodu (opcjonalny - uruchamia się przed deploymentem)
@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: validate
     if: github.event_name == 'push'
-    
+
     environment: staging
 
     steps:
@@ -72,7 +72,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           timeout: 300s
           command_timeout: 300s
-          # Przekaż zmienne środowiskowe do skryptu
+
           envs: DEPLOY_BRANCH,COMPOSER_CMD,PHP_CMD,MAX_BACKUPS,HEALTH_CHECK_URL,SLACK_WEBHOOK,BACKUP_DIR
           script: |
             # Ustaw zmienne środowiskowe dla skryptu deploy
@@ -83,24 +83,24 @@ jobs:
             export HEALTH_CHECK_URL="${{ secrets.HEALTH_CHECK_URL }}"
             export SLACK_WEBHOOK="${{ secrets.SLACK_WEBHOOK }}"
             export BACKUP_DIR= /home/${{ secrets.USERNAME }}/webapps/mojakgp_stage/backups
-            
+
             # Przejdź do katalogu z aplikacją (dla skryptu deploy)
             cd /home/${{ secrets.USERNAME }}/webapps/mojakgp_stage/current/public
-            
+
             # Ścieżka do skryptu deploy (poziom wyżej)
             DEPLOY_SCRIPT="/home/${{ secrets.USERNAME }}/webapps/mojakgp_stage/deploy.sh"
-            
+
             # Sprawdź czy skrypt deploy istnieje i ma uprawnienia do wykonania
             if [ ! -f "$DEPLOY_SCRIPT" ]; then
               echo "Error: deploy.sh not found at $DEPLOY_SCRIPT"
               exit 1
             fi
-            
+
             if [ ! -x "$DEPLOY_SCRIPT" ]; then
               echo "Making deploy.sh executable..."
               chmod +x "$DEPLOY_SCRIPT"
             fi
-            
+
             # Uruchom skrypt deploy
             "$DEPLOY_SCRIPT"
 
@@ -131,12 +131,12 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
-  # Opcjonalny job do uruchomienia testów po deploymencie
+  # Post deployment tests
   post_deploy_tests:
     runs-on: ubuntu-latest
     needs: deploy
     if: success()
-    
+
     steps:
       - name: Wait for application startup
         run: sleep 30
