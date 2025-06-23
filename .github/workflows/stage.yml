@@ -9,8 +9,8 @@ on:
 # Set default environment variables
 env:
   DEPLOY_BRANCH: develop
-  COMPOSER_CMD: composer82
-  PHP_CMD: php82
+  COMPOSER_CMD: composer
+  PHP_CMD: php
   MAX_BACKUPS: 5
   STAGING_URL: https://stage.mojakgp.pl 
 
@@ -28,7 +28,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'
           extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, json
 
       - name: Validate composer.json
