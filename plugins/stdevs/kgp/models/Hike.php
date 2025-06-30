@@ -12,6 +12,7 @@ use Model;
 class Hike extends Model
 {
     use \October\Rain\Database\Traits\Validation;
+    use \October\Rain\Database\Traits\Sluggable;
 
     /**
      * @var string table name
@@ -22,4 +23,11 @@ class Hike extends Model
      * @var array rules for validation
      */
     public $rules = [];
+
+    /**
+     * @var array fields for creating slug
+     */
+    public $slugs = [
+        'name'
+    ];
 }

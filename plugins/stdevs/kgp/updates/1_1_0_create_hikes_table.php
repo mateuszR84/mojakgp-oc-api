@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->string('difficulty_level')->nullable();
-            $table->text('notes')->nullable();
+            $table->string('mountaintop');
             $table->text('notes')->nullable();
             $table->string('status')->nullable();
             $table->timestamp('started_at')->nullable();

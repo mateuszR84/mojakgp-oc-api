@@ -2,6 +2,7 @@
 
 namespace StDevs\Kgp\Api\Controllers;
 
+use Auth;
 use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Routing\Controller;
@@ -24,9 +25,7 @@ class AuthController extends Controller
                 return response()->json(['error' => 'Account not activated'], 401);
             }
 
-            $token = Str::random(60);
-            $user->api_token = hash('sha256', $token);
-            $user->save();
+            $token = Auth::getBearerToken($user);
 
             return response()->json([
                 'token' => $token,
@@ -34,7 +33,9 @@ class AuthController extends Controller
                     'id' => $user->id,
                     'first_name' => $user->first_name,
                     'last_name' => $user->last_name,
-                    'email' => $user->email
+                    'email' => $user->email,
+                    'avatar' => $user->avatar ? $user->avatar->getPath() : null, // URL do avatara
+                    'avatar_thumb' => $user->avatar ? $user->avatar->getThumb(100, 100, 'crop') : null // Miniatura
                 ]
             ]);
         } catch (\Exception $e) {
