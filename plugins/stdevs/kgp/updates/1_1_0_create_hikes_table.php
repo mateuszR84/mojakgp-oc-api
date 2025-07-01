@@ -26,8 +26,10 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->timestamp('started_at')->nullable();
             $table->timestamp('ended_at')->nullable();
-            //TODO:: ADD relation with user
             $table->timestamps();
+
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id', 'stdevs_kgp_hikes_user_id')->references('id')->on('users');
         });
     }
 

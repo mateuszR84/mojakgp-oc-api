@@ -19,7 +19,7 @@ class Plugin extends PluginBase
     {
         return [
             'name' => 'Kgp',
-            'description' => 'No description provided yet...',
+            'description' => 'Manage MojaKGP app',
             'author' => 'StDevs',
             'icon' => 'icon-leaf'
         ];

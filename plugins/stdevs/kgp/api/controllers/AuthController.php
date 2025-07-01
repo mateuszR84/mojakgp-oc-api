@@ -34,8 +34,8 @@ class AuthController extends Controller
                     'first_name' => $user->first_name,
                     'last_name' => $user->last_name,
                     'email' => $user->email,
-                    'avatar' => $user->avatar ? $user->avatar->getPath() : null, // URL do avatara
-                    'avatar_thumb' => $user->avatar ? $user->avatar->getThumb(100, 100, 'crop') : null // Miniatura
+                    'avatar' => $user->avatar ? $user->avatar->getPath() : null,
+                    'avatar_thumb' => $user->avatar ? $user->avatar->getThumb(100, 100, 'crop') : null
                 ]
             ]);
         } catch (\Exception $e) {

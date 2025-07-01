@@ -2,14 +2,13 @@
 
 namespace StDevs\Kgp\Api\Controllers;
 
+use Auth;
 use Mail;
 use Response;
 use Exception;
 use Validator;
-use Illuminate\Support\Str;
 use RainLab\User\Models\User;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -93,5 +92,46 @@ class UserController extends Controller
                 'message' => 'Wystąpił błąd podczas rejestracji: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function updateAvatar()
+    {
+        $user = Auth::getUser();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $request = request();
+
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+
+            // Walidacja
+            $validator = \Validator::make($request->all(), [
+                'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()], 400);
+            }
+
+            // Usuń stary avatar jeśli istnieje
+            if ($user->avatar) {
+                $user->avatar->delete();
+            }
+
+            // Zapisz nowy avatar
+            $user->avatar = $file;
+            $user->save();
+
+            return response()->json([
+                'message' => 'Avatar updated successfully',
+                'avatar' => $user->avatar->getPath(),
+                'avatar_thumb' => $user->avatar->getThumb(100, 100, 'crop')
+            ]);
+        }
+
+        return response()->json(['error' => 'No file uploaded'], 400);
     }
 }

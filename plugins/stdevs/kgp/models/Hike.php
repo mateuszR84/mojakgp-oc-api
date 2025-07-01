@@ -3,6 +3,7 @@
 namespace StDevs\Kgp\Models;
 
 use Model;
+use RainLab\User\Models\User;
 
 /**
  * Hike Model
@@ -29,5 +30,9 @@ class Hike extends Model
      */
     public $slugs = [
         'name'
+    ];
+
+    public $belongsTo = [
+        'user' => User::class,
     ];
 }
