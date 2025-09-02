@@ -17,14 +17,12 @@ class JwtAuth
         }
 
         try {
-            // Weryfikuj token i pobierz użytkownika
             $user = \Auth::getBearerUser($token);
 
             if (!$user) {
                 return response()->json(['error' => 'Invalid token'], 401);
             }
 
-            // Ustaw użytkownika w kontekście
             \Auth::setUser($user);
 
             return $next($request);

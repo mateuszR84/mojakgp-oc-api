@@ -5,6 +5,7 @@ use StDevs\Kgp\Api\Controllers\AuthController;
 use StDevs\Kgp\Api\Controllers\UserController;
 use StDevs\Kgp\Api\Controllers\HikesController;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
+use RainLab\User\Classes\AuthMiddleware;
 
 // Route::group(['middleware' => AuthenticateWithBasicAuth::class], function() {
 //     Route::post('api/registration', [UserController::class, 'register']);
@@ -18,7 +19,7 @@ Route::post('api/logout', [AuthController::class, 'logout']);
 Route::post('api/user/avatar', [UserController::class, 'updateAvatar']);
 
 //hikes
-Route::post('api/add-hike', [HikesController::class, 'create'])->middleware(JWTAuth::class);
+Route::post('api/add-hike', [HikesController::class, 'create'])->middleware(AuthMiddleware::class);
 
 Route::get('/health', function() {
     return response()->json(['status' => 'ok', 'timestamp' => now()]);

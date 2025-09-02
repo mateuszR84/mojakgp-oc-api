@@ -3,18 +3,14 @@
 namespace StDevs\Kgp\Api\Controllers;
 
 use Auth;
-use Mail;
-use Response;
-use Exception;
 use Validator;
-use RainLab\User\Models\User;
+use StDevs\Kgp\Models\Hike;
 use Illuminate\Routing\Controller;
 
 class HikesController extends Controller
 {
     public function create()
     {
-        // Middleware już sprawdził token i ustawił użytkownika
         $user = Auth::getUser();
 
         if (!$user) {
@@ -38,10 +34,9 @@ class HikesController extends Controller
             ], 400);
         }
 
-        // Stwórz nową wyprawę
-        $hike = new \YourPlugin\Models\Hike();
+        $hike = new Hike();
         $hike->fill($data);
-        $hike->user_id = $user->id; // Używaj ID z tokenu, nie z requesta!
+        $hike->user_id = $user->id;
         $hike->save();
 
         return response()->json([

@@ -5,14 +5,23 @@ Content-Type: application/json
 Cookie: XDEBUG_SESSION=start
 
 {
-    "email": "fapiv@mailinator.com",
-    "password": "adminadmin1"
+    "email": "laqutel@mailinator.com",
+    "password": "Admin2025!@"
 }
 
 ### User logout
 @usertoken = {{login.response.body.token}}
 
 POST http://mojakgp-api.devm/api/logout
+Content-Type: application/json
+Cookie: XDEBUG_SESSION=start
+
+{
+    "api_token": "{{usertoken}}"
+}
+
+### Add hike
+POST http://mojakgp-api.devm/api/add-hike
 Content-Type: application/json
 Cookie: XDEBUG_SESSION=start
 

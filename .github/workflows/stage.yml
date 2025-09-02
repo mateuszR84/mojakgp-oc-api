@@ -12,7 +12,7 @@ env:
   COMPOSER_CMD: composer
   PHP_CMD: php
   MAX_BACKUPS: 5
-  STAGING_URL: https://stage.mojakgp.pl 
+  STAGING_URL: https://stage.mojakgp.pl
 
 jobs:
   # Job do walidacji kodu (opcjonalny - uruchamia się przed deploymentem)
